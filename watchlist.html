@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyWatchlist</title>
+    <style>
+        /* Import the Netflix-like font */
+        @import url('https://fonts.googleapis.com/css2?family=Netflix+Sans&display=swap');
+
+        /* Apply the Netflix-like font to the body */
+        body {
+            font-family: 'Netflix Sans', Arial, sans-serif;
+            background-image: url('back.jpg');
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Style the header */
+        header {
+            background-color: #FFCC66;
+            color: #000000;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Style the movie logo */
+        header img {
+            width: 70px;
+            margin-right: 10px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        /* Style the navigation menu */
+        nav {
+            background-color: #FFCC66;
+            color: #000000;
+            padding: 10px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul li {
+            margin-right: 10px;
+        }
+
+        nav ul li:last-child {
+            margin-right: auto;
+        }
+
+        nav ul li a {
+            color: #000000;
+            text-decoration: none;
+            padding: 5px 10px;
+        }
+
+        nav ul li a:hover {
+            background-color: #FFCC66;
+            color: #fff;
+        }
+
+        /* Style the footer */
+        footer {
+            background-color: #FFCC66;
+            color: #000000;
+            padding: 10px;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        /* Style the movie list container */
+        .container {
+            max-width: 960px;
+            margin: 20px auto;
+            padding: 0 20px;
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            margin-top: 0;
+            padding: 10px;
+            font-size: 24px;
+            background-color: #FFCC66;
+            color: #000000;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+        }
+
+        .watchlist-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+
+        .watchlist-item img {
+            width: 100px;
+            height: 150px;
+            margin-right: 20px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .watchlist-item-info {
+            flex-grow: 1;
+        }
+
+        .watchlist-item-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .watchlist-item-description {
+            margin: 10px 0;
+        }
+
+        .delete-button {
+            background-color: #FFCC66;
+            color: #000000;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 8px 16px;
+            font-size: 16px;
+        }
+
+        .update-button {
+            background-color: #FFCC66;
+            color: #000000;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 8px 16px;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        /* Style the modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 300px;
+        }
+
+        .modal-close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .modal-close:hover,
+        .modal-close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-status-label {
+            margin-bottom: 10px;
+        }
+
+        .modal-status-select {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        .modal-update-button {
+            background-color: #FFCC66;
+            color: #000000;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 8px 16px;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>MyWatchlist</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="watchlist.html">MyWatchlist</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h2>MyWatchlist</h2>
+        <div id="watchlist"></div>
+        <button id="clearWatchlistBtn" class="delete-button">Clear Watchlist</button>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 MyWatchlist. All rights reserved.</p>
+    </footer>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <label for="modalStatusSelect" class="modal-status-label">Select Status:</label>
+            <select id="modalStatusSelect" class="modal-status-select">
+                <option value="watched">Already Watched</option>
+                <option value="not-watched">Haven't Watched Yet</option>
+            </select>
+            <button id="modalUpdateButton" class="modal-update-button">Update</button>
+        </div>
+    </div>
+
+    <script>
+        // Load watchlist items from localStorage
+        function loadWatchlist() {
+            var watchlistContainer = document.getElementById("watchlist");
+            watchlistContainer.innerHTML = "";
+
+            if (localStorage.length === 0) {
+                var emptyWatchlistMessage = document.createElement("p");
+                emptyWatchlistMessage.classList.add("empty-watchlist");
+                emptyWatchlistMessage.textContent = "Your watchlist is empty.";
+                watchlistContainer.appendChild(emptyWatchlistMessage);
+            } else {
+                var posterPromises = [];
+
+                for (var i = 0; i < localStorage.length; i++) {
+                    var key = localStorage.key(i);
+                    var movie = JSON.parse(localStorage.getItem(key));
+
+                    var watchlistItem = document.createElement("div");
+                    watchlistItem.classList.add("watchlist-item");
+
+                    var moviePoster = document.createElement("img");
+                    moviePoster.alt = movie.title;
+                    moviePoster.src = "";
+
+                    (function(poster) {
+                        var posterPromise = fetch(`https://www.omdbapi.com/?apikey=83241690&t=${encodeURIComponent(movie.title)}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                poster.src = data.Poster;
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+
+                        posterPromises.push(posterPromise);
+                    })(moviePoster);
+
+                    var movieInfo = document.createElement("div");
+                    movieInfo.classList.add("watchlist-item-info");
+
+                    var movieTitle = document.createElement("h2");
+                    movieTitle.classList.add("watchlist-item-title");
+                    movieTitle.textContent = movie.title;
+
+                    var movieDescription = document.createElement("p");
+                    movieDescription.classList.add("watchlist-item-description");
+                    movieDescription.textContent = movie.year;
+
+                    var movieWatchStatus = document.createElement("p");
+                    movieWatchStatus.textContent = movie.watchStatus ? "Status: " + movie.watchStatus : "";
+
+                    var updateButton = document.createElement("button");
+                    updateButton.textContent = "Update";
+                    updateButton.classList.add("update-button");
+                    updateButton.setAttribute("data-movie-key", key);
+                    updateButton.addEventListener("click", function(event) {
+                        var movieKey = event.target.getAttribute("data-movie-key");
+                        openModal(movieKey);
+                    });
+
+                    var deleteButton = document.createElement("button");
+                    deleteButton.textContent = "Delete";
+                    deleteButton.classList.add("delete-button");
+                    deleteButton.setAttribute("data-movie-key", key);
+                    deleteButton.addEventListener("click", deleteMovieFromWatchlist);
+
+                    movieInfo.appendChild(movieTitle);
+                    movieInfo.appendChild(movieDescription);
+                    movieInfo.appendChild(movieWatchStatus);
+                    movieInfo.appendChild(updateButton);
+                    movieInfo.appendChild(deleteButton);
+
+                    watchlistItem.appendChild(moviePoster);
+                    watchlistItem.appendChild(movieInfo);
+
+                    watchlistContainer.appendChild(watchlistItem);
+                }
+
+                Promise.all(posterPromises)
+                    .then(() => {
+                        // All posters have been fetched
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        }
+
+        function deleteMovieFromWatchlist(event) {
+            var movieKey = event.target.getAttribute("data-movie-key");
+            localStorage.removeItem(movieKey);
+            loadWatchlist();
+        }
+
+        function openModal(movieKey) {
+            var modal = document.getElementById("myModal");
+            var modalUpdateButton = document.getElementById("modalUpdateButton");
+            modalUpdateButton.setAttribute("data-movie-key", movieKey);
+
+            modal.style.display = "block";
+        }
+
+        function closeModal() {
+            var modal = document.getElementById("myModal");
+            modal.style.display = "none";
+        }
+
+        function updateWatchStatus(event) {
+            var movieKey = event.target.getAttribute("data-movie-key");
+            var movie = JSON.parse(localStorage.getItem(movieKey));
+
+            var modalStatusSelect = document.getElementById("modalStatusSelect");
+            var selectedStatus = modalStatusSelect.value;
+
+            if (selectedStatus === "watched") {
+                movie.watchStatus = "Already Watched";
+            } else {
+                movie.watchStatus = "Haven't Watched Yet";
+            }
+
+            localStorage.setItem(movieKey, JSON.stringify(movie));
+            closeModal();
+            loadWatchlist();
+        }
+
+        function clearWatchlist() {
+            localStorage.clear();
+            loadWatchlist();
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            loadWatchlist();
+        });
+
+        var clearWatchlistBtn = document.getElementById("clearWatchlistBtn");
+        clearWatchlistBtn.addEventListener("click", clearWatchlist);
+
+        var modalCloseButton = document.getElementsByClassName("modal-close")[0];
+        modalCloseButton.addEventListener("click", closeModal);
+
+        var modalUpdateButton = document.getElementById("modalUpdateButton");
+        modalUpdateButton.addEventListener("click", updateWatchStatus);
+    </script>
+</body>
+</html>

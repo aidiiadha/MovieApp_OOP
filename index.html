@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Home</title>
+  <style>
+    /* Import the Netflix-like font */
+    @import url('https://fonts.googleapis.com/css2?family=Netflix+Sans&display=swap');
+
+    /* Apply the Netflix-like font to the body */
+    body {
+      font-family: 'Netflix Sans', Arial, sans-serif;
+      background-image: url('back.jpg');
+      background-size: cover;
+      background-position: center;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Style the header */
+    header {
+      background-color: #FFCC66;
+      color: #000000;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between; /* Mengubah posisi logo dan teks MovieApp menjadi sebelah kanan dan kiri */
+    }
+
+    /* Style the movie logo */
+    header img {
+      width: 70px; /* Ubah ukuran sesuai kebutuhan */
+      margin-right: 1500px; /* Beri jarak antara logo dan teks */
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    /* Style the navigation menu */
+    nav {
+      background-color: #FFCC66;
+      color: #000000;
+      padding: 10px;
+    }
+
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center; /* Menyusun menu secara vertical di tengah */
+    }
+
+    nav ul li {
+      margin-right: 10px;
+    }
+
+    nav ul li:last-child {
+      margin-right: auto; /* Menggunakan margin-right:auto agar posisi 'MyWatchlist' sejajar dengan logo di sebelah kiri */
+    }
+
+    nav ul li a {
+      color: #000000;
+      text-decoration: none;
+      padding: 5px 10px;
+    }
+
+    nav ul li a:hover {
+      background-color: #FFCC66;
+      color: #fff;
+    }
+
+    /* Style the footer */
+    footer {
+      background-color: #FFCC66;
+      color: #000000;
+      padding: 10px;
+      text-align: center;
+      margin-top: auto;
+    }
+
+    /* Center the search bar */
+    .center-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+
+    /* Style the input and button */
+    input[type="text"] {
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #FFCC66;
+      color: #000000;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    /* Style the movie list container */
+    #movie-list {
+      margin-top: 20px;
+      background-color: #fff;
+      border-radius: 4px;
+      padding: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* Style the movie item */
+    .movie-item {
+      width: 200px;
+      padding: 10px;
+      background-color: #fff;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: transform 0.2s;
+      margin: 10px;
+      cursor: pointer;
+    }
+
+    .movie-item:hover {
+      transform: translateY(-5px);
+    }
+
+    .movie-item h2 {
+      margin-top: 0;
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .movie-item h3 {
+      margin-top: 5px;
+      font-size: 14px;
+      font-weight: normal;
+      color: #777;
+    }
+
+    .movie-item img {
+      width: 150px;
+      height: 200px;
+      object-fit: cover;
+      margin-bottom: 10px;
+      border-radius: 4px;
+    }
+
+    /* Style the movie details container */
+    #movie-details {
+      display: none;
+      background-color: #fff;
+      border-radius: 4px;
+      padding: 10px;
+      margin-top: 20px;
+    }
+
+    #movie-details h2 {
+      margin-top: 0;
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    #movie-details p {
+      margin-top: 5px;
+      font-size: 16px;
+      font-weight: normal;
+      color: #777;
+    }
+
+    /* Style the add to watchlist button */
+    #add-to-watchlist-button {
+      background-color: #FFCC66;
+      color: #000000;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>MovieApp</h1>
+    <img src="movieicon-removebg-preview.png" alt="Movie Icon" />
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="watchlist.html">MyWatchlist</a></li>
+    </ul>
+  </nav>
+
+  <div class="center-content">
+    <div>
+      <input type="text" id="searchData" placeholder="Enter movie" />
+      <button onclick="buttonClicked()">Enter</button>
+      <h2>Movie Recommendations:</h2>
+    </div>
+  </div>
+
+  <div id="movie-list"></div>
+
+  <div id="movie-details">
+    <h2>Movie Details</h2>
+    <img id="movie-poster" src="" alt="Movie Poster">
+    <h3 id="movie-title"></h3>
+    <p id="movie-plot"></p>
+    <p id="movie-director"></p>
+    <p id="movie-writer"></p>
+    <p id="movie-actors"></p>
+    <p id="movie-year"></p>
+    <p id="movie-rated"></p>
+    <p id="movie-runtime"></p>
+    <p id="movie-ratings"></p>
+    <button id="add-to-watchlist-button" onclick="addToWatchlist()">Add to MyWatchlist</button>
+  </div>
+
+  <footer>
+    <p>&copy; 2023 MovieApp. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function buttonClicked() {
+      var searchData = document.getElementById("searchData").value;
+      window.location.href = "result.html?search=" + encodeURIComponent(searchData);
+    }
+
+    // Add event listener to the input text field
+    document.getElementById("searchData").addEventListener("keypress", function(event) {
+      if (event.keyCode === 13) {
+        buttonClicked();
+      }
+    });
+
+    // Function to create and append movie item
+    function createMovieItem(movie) {
+      const movieList = document.getElementById("movie-list");
+
+      const movieItem = document.createElement("div");
+      movieItem.classList.add("movie-item");
+
+      const movieTitle = document.createElement("h2");
+      movieTitle.textContent = movie.Title;
+
+      const movieYear = document.createElement("h3");
+      movieYear.textContent = movie.Year;
+
+      const moviePoster = document.createElement("img");
+      moviePoster.src = movie.Poster;
+      moviePoster.alt = movie.Title;
+
+      movieItem.appendChild(movieTitle);
+      movieItem.appendChild(movieYear);
+      movieItem.appendChild(moviePoster);
+
+      movieItem.addEventListener("click", function() {
+        showMovieDetails(movie.imdbID);
+      });
+
+      movieList.appendChild(movieItem);
+    }
+
+    // Function to fetch movie recommendations and display them
+    function fetchMovieRecommendations() {
+      // Generate random page number for API request
+      const randomPage = Math.floor(Math.random() * 100) + 1;
+
+      // Fetch movie recommendations from the API with random page
+      const apiUrl = `https://www.omdbapi.com/?apikey=83241690&s=movie&type=movie&page=${randomPage}`;
+
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          if (data.Response === "True") {
+            // Sort movies by year (newer to older)
+            const sortedMovies = data.Search.sort((a, b) => b.Year.localeCompare(a.Year));
+
+            // Create and append movie items
+            sortedMovies.forEach(movie => {
+              createMovieItem(movie);
+            });
+          } else {
+            console.error('Error:', data.Error);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+
+    // Function to show movie details
+    function showMovieDetails(imdbID) {
+      const detailsUrl = `https://www.omdbapi.com/?apikey=83241690&i=${imdbID}`;
+
+      fetch(detailsUrl)
+        .then(response => response.json())
+        .then(data => {
+          if (data.Response === "True") {
+            const moviePoster = document.getElementById("movie-poster");
+            const movieTitle = document.getElementById("movie-title");
+            const moviePlot = document.getElementById("movie-plot");
+            const movieDirector = document.getElementById("movie-director");
+            const movieWriter = document.getElementById("movie-writer");
+            const movieActors = document.getElementById("movie-actors");
+            const movieYear = document.getElementById("movie-year");
+            const movieRated = document.getElementById("movie-rated");
+            const movieRuntime = document.getElementById("movie-runtime");
+            const movieRatings = document.getElementById("movie-ratings");
+            const movieDetailsContainer = document.getElementById("movie-details");
+
+            moviePoster.src = data.Poster;
+            movieTitle.textContent = data.Title;
+            moviePlot.textContent = `Plot: ${data.Plot}`;
+            movieDirector.textContent = `Director: ${data.Director}`;
+            movieWriter.textContent = `Writer: ${data.Writer}`;
+            movieActors.textContent = `Actors: ${data.Actors}`;
+            movieYear.textContent = `Year: ${data.Year}`;
+            movieRated.textContent = `Rated: ${data.Rated}`;
+            movieRuntime.textContent = `Runtime: ${data.Runtime}`;
+            movieRatings.textContent = `Ratings: ${data.Ratings.map(rating => `${rating.Source}: ${rating.Value}`).join(", ")}`;
+
+            movieDetailsContainer.style.display = "block";
+            movieDetailsContainer.scrollIntoView({ behavior: "smooth" });
+          } else {
+            console.error('Error:', data.Error);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+
+    // Function to add movie to watchlist
+    function addToWatchlist() {
+      const movieTitle = document.getElementById("movie-title").textContent;
+      const movieYear = document.getElementById("movie-year").textContent;
+
+      // Check if the movie is already in the watchlist
+      if (localStorage.getItem(movieTitle)) {
+        alert("This movie is already in your watchlist!");
+        return;
+      }
+
+      // Create an object to represent the movie
+      const movie = {
+        title: movieTitle,
+        year: movieYear
+      };
+
+      // Save the movie to the watchlist in local storage
+      localStorage.setItem(movieTitle, JSON.stringify(movie));
+
+      // Provide feedback to the user
+      alert("Movie added to MyWatchlist!");
+    }
+
+    // Call the fetchMovieRecommendations function when the page is loaded
+    document.addEventListener("DOMContentLoaded", fetchMovieRecommendations);
+  </script>
+</body>
+</html>

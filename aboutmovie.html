@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Movie</title>
+  <style>
+    /* Import the Netflix-like font */
+    @import url('https://fonts.googleapis.com/css2?family=Netflix+Sans&display=swap');
+
+    /* Apply the Netflix-like font to the body */
+    body {
+      font-family: 'Netflix Sans', Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-image: url('back.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+
+    /* Style the header */
+    header {
+      background-color: #FFCC66;
+      color: #000000;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start; /* Mengubah posisi logo dan teks MovieApp menjadi sebelah kiri */
+    }
+
+    header img {
+      width: 70px;
+      margin-right: 10px;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    /* Style the navigation menu */
+    nav {
+      background-color: #FFCC66;
+      color: #000000;
+      padding: 10px;
+    }
+
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center; /* Menyusun menu secara vertical di tengah */
+    }
+
+    nav ul li {
+      margin-right: 10px;
+    }
+
+    nav ul li:last-child {
+      margin-right: auto; /* Menggunakan margin-right:auto agar posisi 'MyWatchlist' sejajar dengan logo di sebelah kiri */
+    }
+
+    nav ul li a {
+      color: #000000;
+      text-decoration: none;
+      padding: 5px 10px;
+    }
+
+    nav ul li a:hover {
+      background-color: #FFCC66;
+      color: #fff;
+    }
+
+    /* Style the content */
+    .content {
+      text-align: center; /* Mengatur teks menjadi tengah */
+      margin-top: 20px;
+    }
+
+    .content p {
+      font-weight: bold;
+    }
+
+    /* Style the back button */
+    .back-button {
+      margin-top: 10px;
+      margin-left: 10px;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
+
+    /* Style the footer */
+    footer {
+      background-color: #FFCC66;
+      color: #000000;
+      padding: 10px;
+      text-align: center;
+      margin-top: auto;
+    }
+
+    .back-button {
+      top: 130px;
+      padding: 5px 10px;
+      background-color: #FFCC66;
+      color: #000000;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .back-button:hover {
+      background-color: #000000;
+      color: #fff;
+    }
+
+    .movie-poster {
+      width: 200px;
+      height: auto;
+      margin-bottom: 10px;
+      border-radius: 4px;
+    }
+
+    .movie-details {
+      margin-bottom: 20px;
+    }
+
+    .movie-details p {
+      margin-bottom: 5px;
+    }
+
+    .movie-ratings {
+      margin-top: 10px;
+      text-align: center; /* Menengahkan posisi konten "Movie ratings" */
+    }
+
+    .movie-ratings p {
+      margin-right: 10px;
+      font-weight: bold;
+      display: inline-block; /* Mengatur elemen p menjadi inline-block agar berada dalam satu baris */
+    }
+    .add-to-watchlist-button {
+      margin-top: 10px;
+      padding: 5px 10px;
+      background-color: #FFCC66;
+      color: #000000;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .add-to-watchlist-button:hover {
+      background-color: #000000;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>MovieApp</h1>
+    <img src="movieicon-removebg-preview.png" alt="Movie Icon" />
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="watchlist.html">MyWatchlist</a></li>
+    </ul>
+  </nav>
+
+  <button class="back-button" onclick="goBack()">Back</button>
+
+  <div class="content">
+    <div id="movie-details"></div>
+  </div>
+
+  <footer>
+    <p>&copy; 2023 MovieApp. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function goBack() {
+      window.history.back();
+    }
+
+    function loadMovieDetails() {
+      // Get the IMDb ID from the URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const imdbID = urlParams.get('imdbID');
+
+      // Fetch movie details from the API
+      const apiUrl = `https://www.omdbapi.com/?apikey=83241690&i=${encodeURIComponent(imdbID)}`;
+
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(movie => {
+          const movieDetailsElement = document.getElementById('movie-details');
+          movieDetailsElement.innerHTML = '';
+
+          // Create elements to display the movie details
+          const movieTitle = document.createElement('h2');
+          movieTitle.textContent = movie.Title;
+
+          const moviePoster = document.createElement('img');
+          moviePoster.className = 'movie-poster';
+          moviePoster.src = movie.Poster;
+          moviePoster.alt = movie.Title;
+
+          const movieDetails = document.createElement('div');
+          movieDetails.className = 'movie-details';
+
+          const moviePlot = document.createElement('p');
+          moviePlot.textContent = `Synopsis: ${movie.Plot}`;
+
+          const movieDirector = document.createElement('p');
+          movieDirector.textContent = `Director: ${movie.Director}`;
+
+          const movieWriter = document.createElement('p');
+          movieWriter.textContent = `Writer: ${movie.Writer}`;
+
+          const movieActors = document.createElement('p');
+          movieActors.textContent = `Actors: ${movie.Actors}`;
+
+          const movieYear = document.createElement('p');
+          movieYear.textContent = `Year: ${movie.Year}`;
+
+          const movieRated = document.createElement('p');
+          movieRated.textContent = `Rated: ${movie.Rated}`;
+
+          const movieReleased = document.createElement('p');
+          movieReleased.textContent = `Released: ${movie.Released}`;
+
+          const movieRuntime = document.createElement('p');
+          movieRuntime.textContent = `Runtime: ${movie.Runtime}`;
+
+          const movieRatings = document.createElement('p');
+          movieRatings.textContent = 'Movie ratings: ';
+          movieRatings.className = 'movie-ratings';
+
+          movie.Ratings.forEach(rating => {
+            const ratingElement = document.createElement('p');
+            ratingElement.textContent = `${rating.Source}: ${rating.Value}`;
+            movieRatings.appendChild(ratingElement);
+          });
+
+          const addToWatchlistButton = document.createElement('button');
+          addToWatchlistButton.textContent = 'Add to MyWatchlist';
+          addToWatchlistButton.classList.add('add-to-watchlist-button');
+          addToWatchlistButton.addEventListener('click', function () {
+            addToWatchlist(movie);
+          });
+
+          movieDetails.appendChild(moviePlot);
+          movieDetails.appendChild(movieDirector);
+          movieDetails.appendChild(movieWriter);
+          movieDetails.appendChild(movieActors);
+          movieDetails.appendChild(movieYear);
+          movieDetails.appendChild(movieRated);
+          movieDetails.appendChild(movieReleased);
+          movieDetails.appendChild(movieRuntime);
+          movieDetails.appendChild(movieRatings);
+          movieDetails.appendChild(addToWatchlistButton);
+
+          movieDetailsElement.appendChild(movieTitle);
+          movieDetailsElement.appendChild(moviePoster);
+          movieDetailsElement.appendChild(movieDetails);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+
+    function addToWatchlist(movie) {
+      const movieTitle = movie.Title;
+      const movieYear = movie.Year;
+
+      // Check if the movie is already in the watchlist
+      if (localStorage.getItem(movieTitle)) {
+        alert("This movie is already in your watchlist!");
+        return;
+      }
+
+      // Create an object to represent the movie
+      const movieData = {
+        title: movieTitle,
+        year: movieYear
+      };
+
+      // Save the movie to the watchlist in local storage
+      localStorage.setItem(movieTitle, JSON.stringify(movieData));
+
+      // Provide feedback to the user
+      alert("Movie added to MyWatchlist!");
+    }
+
+    document.addEventListener('DOMContentLoaded', loadMovieDetails);
+  </script>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Result</title>
+  <style>
+    /* Import the Netflix-like font */
+    @import url('https://fonts.googleapis.com/css2?family=Netflix+Sans&display=swap');
+
+    /* Apply the Netflix-like font to the body */
+    body {
+      font-family: 'Netflix Sans', Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-image: url('back.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+
+    /* Style the header */
+    header {
+      background-color: #FFCC66;
+      color: #000000;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start; /* Mengubah posisi logo dan teks MovieApp menjadi sebelah kiri */
+    }
+
+    header img {
+      width: 70px;
+      margin-right: 10px;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    /* Style the navigation menu */
+    nav {
+      background-color: #FFCC66;
+      color: #000000;
+      padding: 10px;
+    }
+
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center; /* Menyusun menu secara vertical di tengah */
+    }
+
+    nav ul li {
+      margin-right: 10px;
+    }
+
+    nav ul li:last-child {
+      margin-right: auto; /* Menggunakan margin-right:auto agar posisi 'MyWatchlist' sejajar dengan logo di sebelah kiri */
+    }
+
+    nav ul li a {
+      color: #000000;
+      text-decoration: none;
+      padding: 5px 10px;
+    }
+
+    nav ul li a:hover {
+      background-color: #FFCC66;
+      color: #fff;
+    }
+
+    /* Style the search bar */
+    .search-bar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end; /* Menggeser search bar ke bagian kanan */
+      padding: 10px;
+    }
+
+    .search-bar input[type="text"] {
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .search-bar button {
+      padding: 5px 10px;
+      background-color: #FFCC66;
+      color: #000000;
+      border: none;
+      border-radius: 4px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    /* Style the footer */
+    footer {
+      background-color: #FFCC66;
+      color: #000000;
+      padding: 10px;
+      text-align: center;
+      margin-top: auto;
+    }
+
+    /* Style the movie list container */
+    #movie-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    /* Style the movie item */
+    .movie-item {
+      width: 200px;
+      padding: 10px;
+      background-color: #fff;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      margin: 10px;
+      transition: transform 0.2s;
+      cursor: pointer;
+    }
+
+    .movie-item:hover {
+      transform: translateY(-5px);
+    }
+
+    .movie-item h2 {
+      margin-top: 0;
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .movie-item img {
+      width: 150px;
+      height: 200px;
+      object-fit: cover;
+      margin-bottom: 10px;
+      border-radius: 4px;
+    }
+
+    /* Style the content */
+    .content {
+      text-align: center; /* Mengatur teks menjadi tengah */
+    }
+
+    .content p {
+      font-weight: bold;
+    }
+
+    .no-movies {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    /* Style the add to watchlist button */
+    .add-to-watchlist-button {
+      background-color: #FFCC66;
+      color: #000000;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+      padding: 5px 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>MovieApp</h1>
+    <img src="movieicon-removebg-preview.png" alt="Movie Icon" />
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="watchlist.html">MyWatchlist</a></li>
+    </ul>
+  </nav>
+
+  <div class="search-bar">
+    <input type="text" id="search-input" placeholder="Search...">
+    <button onclick="searchMovies()">Search</button>
+  </div>
+
+  <div class="content">
+    <!-- Content of result.html -->
+    <p id="search-query"></p>
+    <div id="movie-list"></div>
+    <p id="no-movies" class="no-movies"></p>
+  </div>
+
+  <footer>
+    <p>&copy; 2023 MovieApp. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function goToHome() {
+      window.location.href = "index.html";
+    }
+
+    function searchMovies() {
+      const searchInput = document.getElementById('search-input').value;
+      window.location.href = `result.html?search=${encodeURIComponent(searchInput)}`;
+    }
+
+    function loadMovies() {
+      // Get the search query from the URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const searchQuery = urlParams.get('search');
+
+      // Display the search query
+      const searchQueryElement = document.getElementById('search-query');
+      searchQueryElement.textContent = `You searched for: ${searchQuery}`;
+
+      // Fetch movie data from the API
+      const apiUrl = `https://www.omdbapi.com/?apikey=83241690&s=${encodeURIComponent(searchQuery)}`;
+
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          const movieListElement = document.getElementById('movie-list');
+          const noMoviesElement = document.getElementById('no-movies');
+
+          // Check if movies are found
+          if (data.Search && data.Search.length > 0) {
+            // Loop through each movie and create a movie item
+            data.Search.forEach(movie => {
+              const movieItem = document.createElement('div');
+              movieItem.className = 'movie-item';
+              movieItem.addEventListener('click', function () {
+                showMovieDetails(movie.imdbID);
+              });
+
+              const movieTitle = document.createElement('h2');
+              movieTitle.textContent = movie.Title;
+
+              const moviePoster = document.createElement('img');
+              moviePoster.src = movie.Poster;
+              moviePoster.alt = movie.Title;
+
+              const movieYear = document.createElement('p');
+              movieYear.textContent = `Year: ${movie.Year}`;
+
+              const movieImdbID = document.createElement('p');
+              movieImdbID.textContent = `imdb ID: ${movie.imdbID}`;
+
+              movieItem.appendChild(movieTitle);
+              movieItem.appendChild(moviePoster);
+              movieItem.appendChild(movieYear);
+              movieItem.appendChild(movieImdbID);
+
+              movieListElement.appendChild(movieItem);
+            });
+          } else {
+            noMoviesElement.textContent = 'No movies found.';
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+
+    function showMovieDetails(imdbID) {
+      window.location.href = `aboutmovie.html?imdbID=${encodeURIComponent(imdbID)}`;
+    }
+
+    document.addEventListener('DOMContentLoaded', loadMovies);
+  </script>
+</body>
+</html>
+
+
+
+
+
